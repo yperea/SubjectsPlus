@@ -373,7 +373,7 @@ ORDER BY s.subject";
     }
   }
 
-  $alphabet .= " <select name=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
+  $alphabet .= "<label for=\"browser\">" . _("Browsers:") . "</label> <select name=\"browser\" id=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
   <option value=\"\" style=\"color: #ccc;\">- by subject -</option>
         $subs_option_boxes
         </select>";
@@ -957,7 +957,7 @@ function getDBbyTypeBoxes($selected_type = "", $show_formats = TRUE) {
     }
 
     if ($show_formats == TRUE) {
-      $alphabet .= " <select name=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
+      $alphabet .= "<label for=\"browser\">" . _("Browsers:") . "</label> <select name=\"browser\" id=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
       <option value=\"\">- by format -</option>
       <option value=\"databases.php?letter=bytype\">" . _("List All Format Types") . "</option>
       $types_option_boxes
