@@ -17,6 +17,7 @@
     <xsl:param name="language"></xsl:param>
     <xsl:param name="publisher"></xsl:param>
     <xsl:param name="type"></xsl:param>
+    <xsl:param name="collectionList"></xsl:param>
     <xsl:param name="recordDate"></xsl:param>
     <xsl:param name="url"></xsl:param>
 
@@ -58,6 +59,11 @@
                     <dc:type>
                         <xsl:value-of select="$type"></xsl:value-of>
                     </dc:type>
+                    <xsl:for-each select="$collectionList">
+                        <dc:collection>
+                            <xsl:value-of select="."></xsl:value-of>
+                        </dc:collection>
+                    </xsl:for-each>
                     <dc:description>
                         <xsl:value-of select="$description"></xsl:value-of>
                     </dc:description>

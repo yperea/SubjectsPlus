@@ -14,6 +14,7 @@
     <xsl:param name="language"></xsl:param>
     <xsl:param name="publisher"></xsl:param>
     <xsl:param name="type"></xsl:param>
+    <xsl:param name="collectionList"></xsl:param>
     <xsl:param name="recordDate"></xsl:param>
 
     <xsl:template match="/">
@@ -23,7 +24,9 @@
     <xsl:template name="GetRecord">
         <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-            <responseDate><xsl:value-of select="$responseDate"></xsl:value-of></responseDate>
+            <responseDate>
+                <xsl:value-of select="$responseDate"></xsl:value-of>
+            </responseDate>
             <request verb="GetRecord">
                 <xsl:attribute name="identifier">
                     <xsl:value-of select="$identifier"></xsl:value-of>
@@ -34,8 +37,12 @@
             <GetRecord>
                 <record>
                     <header>
-                        <identifier><xsl:value-of select="$identifier"></xsl:value-of></identifier>
-                        <datestamp><xsl:value-of select="$recordDate"></xsl:value-of></datestamp>
+                        <identifier>
+                            <xsl:value-of select="$identifier"></xsl:value-of>
+                        </identifier>
+                        <datestamp>
+                            <xsl:value-of select="$recordDate"></xsl:value-of>
+                        </datestamp>
                     </header>
                     <metadata>
                         <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
@@ -63,7 +70,15 @@
                             <dc:type>
                                 <xsl:value-of select="$type"></xsl:value-of>
                             </dc:type>
-                            <dc:identifier><xsl:value-of select="$url"></xsl:value-of></dc:identifier>
+                            sfsdfsdf
+                            <xsl:for-each select="/record/metadata/oai_dc:dc/collectionList">
+                                <dc:collection>
+                                    <xsl:value-of select="."></xsl:value-of>
+                                </dc:collection>
+                            </xsl:for-each>
+                            <dc:identifier>
+                                <xsl:value-of select="$url"></xsl:value-of>
+                            </dc:identifier>
                         </oai_dc:dc>
                     </metadata>
                 </record>

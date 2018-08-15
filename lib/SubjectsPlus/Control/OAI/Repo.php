@@ -90,6 +90,7 @@ class Repo
         //write the xml file first
         $this->getRecords();
 
+        die();
         $xsl = new DOMDocument();
         $xsl->load('./xsl/ListRecords.xsl');
         $this->xslt->importStylesheet($xsl);
@@ -123,5 +124,10 @@ class Repo
         $xslt->setParameter('', 'identifier', $record->getIdentifier());
         $xslt->setParameter('', 'url', $this->identifierUrl . $record->getIdentifier());
         $xslt->setParameter('', 'type', $record->getType());
+
+        foreach ( $record->getCollectionList() as $collection){
+	        $xslt->setParameter('', 'collectionList', $collection);
+        }
+
     }
 }

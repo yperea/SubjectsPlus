@@ -14,7 +14,7 @@ use SubjectsPlus\Control\BaseUrl;
 use SubjectsPlus\Control\OAI\Repo;
 use SubjectsPlus\Control\OAI\Request;
 
-header("Content-type: text/xml");
+//header("Content-type: text/xml");
 
 
 include_once ('../control/includes/autoloader.php');
