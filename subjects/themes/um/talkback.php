@@ -575,7 +575,8 @@ include("includes/header_um.php");
 			        <div class="talkback_form <?php print $tb_bonus_css; ?>">			          
 			          <p>
                           <strong><?php print _("Your comment:"); ?></strong><br />
-                          <textarea name="the_suggestion" cols="26" rows="6" class="form-item"><?php print $this_comment; ?></textarea><br /><br />
+                          <label for="the_suggestion"><?php print _("Your comment:"); ?></label>
+                          <textarea name="the_suggestion" id="the_suggestion" cols="26" rows="6" class="form-item"><?php print $this_comment; ?></textarea><br /><br />
 			              <strong><?php print _("Your email (optional):"); ?></strong><br />
                           <input type="text" name="name" size="20" value="<?php print $this_name; ?>" class="form-item" />
 			              <br />
