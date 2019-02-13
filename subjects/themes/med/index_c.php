@@ -113,7 +113,7 @@ if (isset($_POST["searchterm"]) && $_POST["searchterm"] != "") {
     $searchterm = scrubData($_POST["searchterm"]);
     $search_param = "%" . $searchterm . "%";
 
-    $pills = "<div class=\"pills-label\">" . _("Start over:") ."</div><div class=\"pills-container\"><a href=\"index.php\">See All Research Guides</a></div>"; 
+    $pills = "<div class=\"pills-label\">" . _("Start over:") ."</div><div class=\"pills-container\"><a href=\"index.php\">See All Research Guides</a></div>";
 
     $q_search = "select * from subject 
     WHERE active = '1' 
@@ -377,7 +377,8 @@ include("includes/footer_med.php");
         //add class to ui-autocomplete dropdown
         $( ".ui-autocomplete" ).addClass( "index-search-dd" );
 
-              
+        // switch icon option
+        $("#listguides #section-Collection i.fa-plus-circle").removeClass("fas fa-plus-circle").addClass("fa fa-plus-square");
 
 
     });

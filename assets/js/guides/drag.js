@@ -225,10 +225,12 @@ function drag() {
                     opacity: 0.7,
                     cancel: '.unsortable',
                     handle: '.section_sort',
-                    update: function (event, ui) {
+                    receive: function (event, ui) {
                         $("#response").hide();
-                        $("#save_guide").fadeIn();
-
+                        var save = saveSetup();
+                        save.saveGuide();
+                        console.log('sections saveguide');
+                        $('#save_guide').fadeOut();
                     },
                     start: function (event, ui) {
                         $(ui.item).find('.dropspotty').hide();
@@ -250,10 +252,11 @@ function drag() {
                     tolerance: 'pointer',
                     cancel: '.unsortable',
                     handle: 'div.pluslet_sort',
-                    update: function (event, ui) {
+                    receive: function (event, ui) {
                         $("#response").hide();
-                        $("#save_guide").fadeIn();
-
+                        var save = saveSetup();
+                        save.saveGuide();
+                        $('#save_guide').fadeOut();
                     },
                     start: function (event, ui) {
                         $(ui.item).children('.pluslet_body').hide();
