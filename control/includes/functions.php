@@ -385,8 +385,8 @@ ORDER BY s.subject";
 		}
 	}
 
+	$alphabet .= "<label for=\"browser\">" . _("Browsers:") . "</label> <select name=\"browser\" id=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
   <option value=\"\" style=\"color: #ccc;\">- by subject -</option>
-  $alphabet .= "<label for=\"browser\">" . _("Browsers:") . "</label> <select name=\"browser\" id=\"browser\" onChange=\"window.location=this.options[selectedIndex].value\">
         $subs_option_boxes
         </select>";
 
