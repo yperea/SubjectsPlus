@@ -2896,12 +2896,24 @@ class upload {
                             finfo_close($f);
                             $this->file_src_mime = $mime;
                             $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MIME type detected as ' . $this->file_src_mime . ' by Fileinfo PECL extension<br />';
+
+                            if (preg_match("/^([\.\-\w]+)\/([\.\-\w]+)(.*)$/i", $this->file_src_mime)) {
+                                $this->file_src_mime = preg_replace("/^([\.\-\w]+)\/([\.\-\w]+)(.*)$/i", '$1/$2', $this->file_src_mime);
+                                $this->log .= '-&nbsp;MIME validated as ' . $this->file_src_mime . '<br />';
+                            } else {
+                                $this->file_src_mime = null;
+                            }
+
+                            /* Before: Pattern error!
                             if (preg_match("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", $this->file_src_mime)) {
                                 $this->file_src_mime = preg_replace("/^([\.-\w]+)\/([\.-\w]+)(.*)$/i", '$1/$2', $this->file_src_mime);
                                 $this->log .= '-&nbsp;MIME validated as ' . $this->file_src_mime . '<br />';
                             } else {
                                 $this->file_src_mime = null;
                             }
+                            */
+
+
                         } else {
                             $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;Fileinfo PECL extension failed (finfo_open)<br />';
                         }
@@ -3211,7 +3223,9 @@ class upload {
      * @return integer Size in bytes
      */
     function getsize($size) {
+
         $last = strtolower($size{strlen($size)-1});
+        $size = preg_replace('/\D+/', "", $size);
         switch($last) {
             case 'g':
                 $size *= 1024;
@@ -3220,6 +3234,7 @@ class upload {
             case 'k':
                 $size *= 1024;
         }
+
         return $size;
     }
 
