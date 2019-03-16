@@ -113,8 +113,10 @@ class Staff {
 				$this->_social_media = $this->setSocialMediaDataPost();
 
 				// data stored in staff_department table
-				$this->_department_id    = $_POST["department_id"]; // array
-				$this->_department_count = count( $this->_department_id ); // # of items in above array
+                if (isset($this->_department_id) && !empty($this->_department_id)) {
+                    $this->_department_id    = $_POST["department_id"]; // array
+                    $this->_department_count = count( $this->_department_id ); // # of items in above array
+                }
 
 				if ( isset( $this->_extra ) ) {
 					$this->_extra = $_POST['extra'];
@@ -925,8 +927,13 @@ class Staff {
 		//print "<input type=\"hidden\" name=\"department_id\" value=\"" . $this->_department_id . "\" />";
 		//print "<input type=\"hidden\" value=\"{$this->_department_id}\" name=\"department_id[]\" />";
 
-        foreach ($this->_department_id as $department_item){
-            print "<input type=\"hidden\" name=\"department_id[]\" value=\"" . $department_item . "\" />";
+        if (!isset($this->_department_id) || empty($this->_department_id)) {
+            print "<input type=\"hidden\" name=\"department_id\" value=\"\" />";
+        } else {
+
+            foreach ($this->_department_id as $department_item){
+                print "<input type=\"hidden\" name=\"department_id[]\" value=\"" . $department_item . "\" />";
+            }
         }
 
 		print "<input type=\"hidden\" name=\"staff_sort\" value=\"" . $this->_staff_sort . "\" />";
