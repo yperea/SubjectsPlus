@@ -922,8 +922,13 @@ class Staff {
 		print "<input type=\"hidden\" name=\"fname\" value=\"" . $this->_fname . "\" />";
 		print "<input type=\"hidden\" name=\"title\" value=\"" . $this->_title . "\" />";
 		print "<input type=\"hidden\" name=\"tel\" value=\"" . $this->_tel . "\" />";
-		print "<input type=\"hidden\" name=\"department_id\" value=\"" . $this->_department_id . "\" />";
+		//print "<input type=\"hidden\" name=\"department_id\" value=\"" . $this->_department_id . "\" />";
 		//print "<input type=\"hidden\" value=\"{$this->_department_id}\" name=\"department_id[]\" />";
+
+        foreach ($this->_department_id as $department_item){
+            print "<input type=\"hidden\" name=\"department_id[]\" value=\"" . $department_item . "\" />";
+        }
+
 		print "<input type=\"hidden\" name=\"staff_sort\" value=\"" . $this->_staff_sort . "\" />";
 		print "<input type=\"hidden\" name=\"email\" value=\"" . $this->_email . "\" />";
 		print "<input type=\"hidden\" name=\"user_type_id\" value=\"" . $this->_user_type_id . "\" />";
