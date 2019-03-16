@@ -709,18 +709,34 @@ function seeRecentChanges( $staff_id, $limit = 10 ) {
 		$sq2 = "SELECT ourtable, record_id, record_title, message, date_added
         FROM chchchanges
         WHERE staff_id = '" . $staff_id . "'
+        ORDER BY date_added DESC
+        LIMIT 0, $limit";
+
+		/* Before: using GROUP BY clause without aggregated function
+        $sq2 = "SELECT ourtable, record_id, record_title, message, date_added
+        FROM chchchanges
+        WHERE staff_id = '" . $staff_id . "'
         GROUP BY record_title, message, ourtable
         ORDER BY date_added DESC
         LIMIT 0, $limit";
+        */
+
 	} else {
 		$sq2 = "SELECT ourtable, record_id, record_title, message, date_added, CONCAT( fname, ' ', lname ) AS fullname
+        FROM chchchanges, staff
+        WHERE chchchanges.staff_id = staff.staff_id
+        ORDER BY date_added DESC
+        LIMIT 0 , $limit";
+
+        /* Before: using GROUP BY clause without aggregated function
+        $sq2 = "SELECT ourtable, record_id, record_title, message, date_added, CONCAT( fname, ' ', lname ) AS fullname
         FROM chchchanges, staff
         WHERE chchchanges.staff_id = staff.staff_id
         GROUP BY record_title, message, ourtable
         ORDER BY date_added DESC
         LIMIT 0 , $limit";
+        */
 	}
-
 
 	//print $sq2;
 	$db = new Querier;
