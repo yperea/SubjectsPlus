@@ -329,7 +329,8 @@ if ( ! is_writable( $lstrConfigFilePath ) ) {
 				'Experts',
 				'IIIWebPac',
 				_( '3' ),
-				_( '5' )
+				_( '5' ),
+                'OrgChart'
 			),
 			_( "" )
 		),
