@@ -140,7 +140,8 @@ switch ($_POST["flag"]) {
         $r = $db->exec($q);
 
     	//added by dgonzalez because if pluslet is special, no deletetion so need to manually delete relationship
-    	if( count($r) == 0 )
+    	//if( count($r) == 0 )
+        if( $r == 0 )
     	{
     		$q2 = "DELETE ps FROM `pluslet_section` ps
     				INNER JOIN section sec
