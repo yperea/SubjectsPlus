@@ -1464,24 +1464,27 @@ class Staff {
 		$this->_debug .= "<p>Department query: $q2";
 	}
 
-	function modifySD() {
+    function modifySD() {
 
-		$de_duped = array_unique( $this->_department_id );
+        if(isset($this->_department_id) && !empty($this->_department_id)){
 
-		foreach ( $de_duped as $value ) {
-			if ( is_numeric( $value ) ) {
-				$db    = new Querier;
-				$qUpSD = "INSERT INTO staff_department (staff_id, department_id) VALUES (
-        " . scrubData( $this->_staff_id, 'integer' ) . ",
-        " . scrubData( $value, 'integer' ) . ")";
-				$db    = new Querier;
-				$rUpSD = $db->exec( $qUpSD );
+            $de_duped = array_unique( $this->_department_id );
 
-				$this->_debug .= "<p>3. (insert staff_department loop) : $qUpSD</p>";
+            foreach ( $de_duped as $value ) {
+                if ( is_numeric( $value ) ) {
+                    $db    = new Querier;
+                    $qUpSD = "INSERT INTO staff_department (staff_id, department_id) VALUES ("
+                           . scrubData( $this->_staff_id, 'integer' ) . ", "
+                           . scrubData( $value, 'integer' ) . ")";
+                    $db    = new Querier;
+                    $rUpSD = $db->exec( $qUpSD );
 
-			}
-		}
-	}
+                    $this->_debug .= "<p>3. (insert staff_department loop) : $qUpSD</p>";
+
+                }
+            }
+        }
+    }
 
 	public function getMessage() {
 		return $this->_message;
