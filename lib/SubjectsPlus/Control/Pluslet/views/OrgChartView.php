@@ -6,10 +6,9 @@
  */
 ?>
 
-<h1>This is the View</h1>
-
-<?php foreach($this->_staff as $staff): ?>
-    <div class="subject-specialist-form">
-        <h4><?= $staff["lname"]; ?></h4>
-    </div>
-<?php endforeach; ?>
+<h4>
+    Organization Chart for <?= $this->_extra['staff_area']?>
+</h4>
+<h2>
+    <?=!empty($this->_employee)? $this->_employee["lname"] . ", " . $this->_employee["fname"] : "";?>
+</h2>
