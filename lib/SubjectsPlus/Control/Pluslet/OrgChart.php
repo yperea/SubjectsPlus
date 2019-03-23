@@ -13,6 +13,7 @@ class Pluslet_OrgChart extends Pluslet {
 
     protected $_supervisors;
     protected $_employee;
+    protected $_staff;
 
 
     public function __construct($pluslet_id = "", $flag = "", $subject_id = "", $isclone = 0) {
@@ -51,7 +52,8 @@ class Pluslet_OrgChart extends Pluslet {
 
         parent::onViewOutput();
 
-        $this->_employee = $this->getEmployee($this->_extra['staff_supervisor_id']);//getStaff();
+        $supervisor_id   = $this->_extra['staff_supervisor_id'];
+        $this->_employee = $this->getEmployee($supervisor_id);
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartView.php');
     }
 
@@ -65,78 +67,138 @@ class Pluslet_OrgChart extends Pluslet {
     }
 
     /**
-     * Gets all the staff of supervisors.
+     * Gets all the staff marked as supervisors.
      *
      * @return array of staff supervisors.
      */
     protected function getSupervisors() {
 
-        $dbc = new Querier;
-        $ptags = "supervisor";
-
-        $query_params = [':ptags'=> $ptags];
-        //$query_params = [':ptags'=>'%'. $ptags . '%'];
-
-        $sql   = "SELECT DISTINCT s.supervisor_id,
-                                    s.staff_id,
-                                    s.lname,
-                                    s.fname,
-                                    s.title,
-                                    s.department_id,
-                                    d.name as department,
-                                    s.staff_sort,
-                                    d.department_sort,
-                                    s.active,
-                                    s.ptags
-                    FROM staff s
-                           INNER JOIN staff_department sd ON s.department_id = sd.department_id
-                           INNER JOIN department d ON sd.department_id = d.department_id
-                    WHERE s.ptags = :ptags
-                    ORDER BY s.supervisor_id, s.staff_id";
-
-        $results = $dbc->queryWithPreparedStatement($sql, PDO::FETCH_ASSOC, $query_params);
+        $results        = null;
+        $query_params   = [":ptags"=> "supervisor"];
+        $results        = $this->getStaff($query_params);
 
         return $results;
     }
 
     /**
-     * Gets an employee object for a given staff Id.
+     * Gets the staff of a specific supervisor.
+     *
+     * @param $supervisor_id Supervisor id.
+     * @return array of employees.
+     */
+    protected function getSupervisorStaff($supervisor_id) {
+
+        $results        = null;
+        $query_params   = [":supervisor_id"=> $supervisor_id];
+        $results        = $this->getStaff($query_params);
+
+        return $results;
+    }
+
+    /**
+     * Gets an employee for a given staff Id.
      *
      * @param staff_id Employee id.
-     * @return employee object.
+     * @return employee.
      */
     protected function getEmployee($staff_id) {
 
-        $dbc = new Querier;
-        $result = null;
-
-        $query_params = [':staff_id'=> $staff_id];
-
-
-        $sql   = "SELECT DISTINCT s.supervisor_id,
-                                    s.staff_id,
-                                    s.lname,
-                                    s.fname,
-                                    s.title,
-                                    s.department_id,
-                                    d.name as department,
-                                    s.staff_sort,
-                                    d.department_sort,
-                                    s.active,
-                                    s.ptags
-                    FROM staff s
-                           INNER JOIN staff_department sd ON s.department_id = sd.department_id
-                           INNER JOIN department d ON sd.department_id = d.department_id
-                    WHERE s.staff_id = :staff_id
-                    ORDER BY s.supervisor_id, s.staff_id
-                    LIMIT 1";
-
-        $results = $dbc->queryWithPreparedStatement($sql, PDO::FETCH_ASSOC, $query_params);
+        $result         = null;
+        $query_params   = [':staff_id'=> $staff_id];
+        $results        = $this->getStaff($query_params);
 
         if (!empty($results)) {
             $result = $results[0];
         }
 
         return $result;
+    }
+
+    /**
+     * Gets a set of employees according to given parameters.
+     *
+     * @param $query_params array of parameters for PDO prepared statement.
+     * @return array of employees.
+     */
+    protected function getStaff($query_params = null) {
+
+        $dbc         = new Querier;
+        $results     = null;
+        $whereClause = null;
+
+        $sql   = "SELECT DISTINCT s.supervisor_id,
+                                    s.staff_id,
+                                    s.lname,
+                                    s.fname,
+                                    s.title,
+                                    s.department_id,
+                                    d.name as department,
+                                    s.staff_sort,
+                                    d.department_sort,
+                                    s.active,
+                                    s.ptags
+                    FROM staff s
+                           INNER JOIN staff_department sd ON s.department_id = sd.department_id
+                           INNER JOIN department d ON sd.department_id = d.department_id";
+
+        $whereClause = $this->getQueryFilters($query_params);
+
+        if (!empty(trim($whereClause))) {
+            $sql .= " WHERE $whereClause";
+        }
+
+        $sql .= " ORDER BY s.supervisor_id, s.staff_id";
+
+        try {
+
+            $results = $dbc->queryWithPreparedStatement($sql, PDO::FETCH_ASSOC, $query_params);
+        }
+        catch (Exception $exception)
+        {
+            echo $exception->getMessage();
+        }
+        return $results;
+    }
+
+    /**
+     * Build the WHERE clause based on parameters passed.
+     *
+     * @param $query_params array of parameters for PDO prepared statement.
+     * @return string with the filters to be applied.
+     */
+    protected function getQueryFilters ($query_params = null) {
+
+        $filters = array();
+
+        foreach ($query_params as $param =>$value) {
+
+            switch ($param) {
+
+                case ":ptags":
+                    if ($value == null) {
+                        $filters[] = "s.staff_id is null";
+                    } else {
+                        $filters[] = "s.ptags = $param";
+                    }
+                    break;
+
+                case ":staff_id":
+                    if ($value == null) {
+                        $filters[] = "s.staff_id is null";
+                    } else {
+                        $filters[] = "s.staff_id = $param";
+                    }
+                    break;
+
+                case ":supervisor_id":
+                    if ($value == null) {
+                        $filters[] = "s.supervisor_id is null";
+                    } else {
+                        $filters[] = "s.supervisor_id = $param";
+                    }
+                    break;
+            }
+        }
+        return implode(" AND ", $filters);
     }
 }
