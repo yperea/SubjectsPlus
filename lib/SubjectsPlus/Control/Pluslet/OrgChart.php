@@ -54,6 +54,7 @@ class Pluslet_OrgChart extends Pluslet {
 
         $supervisor_id   = $this->_extra['staff_supervisor_id'];
         $this->_employee = $this->getEmployee($supervisor_id);
+        $this->_staff = $this->getSupervisorStaffTree($supervisor_id);
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartView.php');
     }
 
@@ -65,6 +66,67 @@ class Pluslet_OrgChart extends Pluslet {
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartEdit.php');
 
     }
+
+    /**
+     * Builds a recursive tree organization structure reporting to a supervisor.
+     *
+     * @param $supervisor_id integer identifier of the head of the structure. null to get all the organization.
+     * @param $staff array that contains the resulting structure.
+     * @param $parent array that holds the child and parent information of the current node.
+     * @param $level integer that keeps the depth of the current node in the tree.
+     * @return array with the organization structure.
+     */
+    protected function getSupervisorStaffTree($supervisor_id = null, &$staff = array(), &$parent = array(), &$level = 0) {
+
+        $children = array();
+
+        if ($staff == null) {
+            $staff = array();
+        }
+
+        if ($parent == null) {
+            $parent = array();
+        }
+
+        $supervisor_staff = $this->getSupervisorStaff($supervisor_id);
+        $supervisor = $this->getEmployee($supervisor_id);
+        $head = array("staff_id" => $supervisor['staff_id'], "lname" => $supervisor['lname']);
+
+        if(count($supervisor_staff) > 0) {
+
+            $counter = 0;
+
+            foreach ($supervisor_staff as $employee) {
+
+                $child = array("staff_id" => $employee['staff_id'], "lname" => $employee['lname']);
+
+                $level++;
+                SELF::getSupervisorStaffTree($employee['staff_id'], $staff, $child, $level);
+                $level--;
+
+                $children[] = $child;
+
+                if ($level == 0) {
+
+                    if ($supervisor_id == null) {
+                        $staff = $child;
+                    } else {
+                        if ($staff == null){
+                            $staff = $head;
+                        }
+                        $staff["children"][] = $child;
+                    }
+                }
+
+                $counter++;
+            }
+            if ($level != 0) {
+                $parent["children"] = $children;
+            }
+        }
+        return $staff;
+    }
+
 
     /**
      * Gets all the staff marked as supervisors.
