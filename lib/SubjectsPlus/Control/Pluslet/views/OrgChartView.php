@@ -10,12 +10,12 @@
     $head_username  = $this->_organization_tree['uname'];
     $staffTree = json_encode($this->_organization_tree['children']);
 ?>
-<h4>
-    Organization Chart for <?= $this->_extra['staff_area']?>
-</h4>
-<h2>
-    <?=!empty($this->_employee)? $this->_employee["lname"] . ", " . $this->_employee["fname"] : "";?>
-</h2>
+<h3>
+    Organization Chart for <b><?= $this->_extra['staff_area']?></b>
+</h3>
+<h3>
+    Head: <?=!empty($this->_employee)? $this->_employee["fname"] . " " . $this->_employee["lname"] : "";?>
+</h3>
 
 <div id="chart-container" style="text-align: center"></div>
 
@@ -41,8 +41,8 @@
             $('#chart-container').orgchart({
                 'data' : datasource,
                 'visibleLevel': 2,
-                'nodeTitle': 'staff_id',
-                'nodeContent': 'fullname',
+                'nodeTitle': 'fullname',
+                'nodeContent': 'staff_id',
                 'nodeID': 'uname',
                 'createNode': function($node, data) {
                     var secondMenuIcon = $('<i>', {

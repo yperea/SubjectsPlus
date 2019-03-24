@@ -2,6 +2,7 @@
 
 namespace SubjectsPlus\Control;
 require_once ("Pluslet.php");
+require_once (__DIR__."/../../ViewModels/Employee.php");
 use PDO;
 
 /**
@@ -19,6 +20,8 @@ class Pluslet_OrgChart extends Pluslet {
     public function __construct($pluslet_id = "", $flag = "", $subject_id = "", $isclone = 0) {
 
         parent::__construct($pluslet_id, $flag, $subject_id, $isclone);
+
+        $employee = new \Employee();
 
         $this->_type = "OrgChart";
         $this->_pluslet_bonus_classes = "orgchart-pluslet";
@@ -194,6 +197,8 @@ class Pluslet_OrgChart extends Pluslet {
         $dbc         = new Querier;
         $results     = null;
         $whereClause = null;
+
+        $employee = new \Employee();
 
         $sql   = "SELECT DISTINCT s.supervisor_id,
                                     s.staff_id,
