@@ -10,37 +10,6 @@
     $head_username  = $this->_organization_tree['uname'];
     $staffTree = json_encode($this->_organization_tree['children']);
 ?>
-<style type="text/css">
-    .orgchart .second-menu-icon {
-        transition: opacity .5s;
-        opacity: 0;
-        right: -5px;
-        top: -5px;
-        z-index: 2;
-        color: rgba(68, 157, 68, 0.5);
-        font-size: 18px;
-        position: absolute;
-    }
-    .orgchart .second-menu-icon:hover { color: #449d44; }
-    .orgchart .node:hover .second-menu-icon { opacity: 1; }
-    .orgchart .node .second-menu {
-        display: none;
-        position: absolute;
-        top: 0;
-        right: -70px;
-        border-radius: 35px;
-        box-shadow: 0 0 10px 1px #999;
-        background-color: #fff;
-        z-index: 1;
-    }
-    .orgchart .node .second-menu .avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 30px;
-        float: left;
-        margin: 5px;
-    }
-</style>
 <h4>
     Organization Chart for <?= $this->_extra['staff_area']?>
 </h4>
@@ -48,7 +17,7 @@
     <?=!empty($this->_employee)? $this->_employee["lname"] . ", " . $this->_employee["fname"] : "";?>
 </h2>
 
-<div id="chart-container"></div>
+<div id="chart-container" style="text-align: center"></div>
 
 <script type="text/javascript">
 
