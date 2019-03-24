@@ -519,6 +519,7 @@ $(document.body).on('click','a[id*=boxid-]', function(event) {
 <?php include('../assets/js/guides/ArticlesPlus.js'); ?>
 <?php include('../assets/js/guides/PrimoSearchBox.js'); ?>
 <?php include('../assets/js/guides/bookList.js'); ?>
+<?php include('../assets/js/guides/jquery.orgchart.js'); ?>
 
 hash.init();
 track.init();

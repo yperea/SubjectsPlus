@@ -10,6 +10,7 @@
 
 <link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/shared/pure-min.css">
 <link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/shared/grids-responsive-min.css">
+<link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/shared/jquery.orgchart.css">
 <?php 
 // see if we need to override the css; you, too, can do this via the Admin > Config Site page
 if (isset($css_override)  && $css_override != "") { 

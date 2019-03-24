@@ -13,8 +13,8 @@ class Pluslet_OrgChart extends Pluslet {
 
     protected $_supervisors;
     protected $_employee;
-    protected $_staff;
-
+    protected $_organization_tree ;
+    protected $_staff_picture_url;
 
     public function __construct($pluslet_id = "", $flag = "", $subject_id = "", $isclone = 0) {
 
@@ -54,7 +54,14 @@ class Pluslet_OrgChart extends Pluslet {
 
         $supervisor_id   = $this->_extra['staff_supervisor_id'];
         $this->_employee = $this->getEmployee($supervisor_id);
-        $this->_staff = $this->getSupervisorStaffTree($supervisor_id);
+        $this->_organization_tree = $this->getSupervisorStaffTree($supervisor_id);
+
+        if(isset($_GET['subject'])) {
+            $this->_staff_picture_url = "../assets/users/_";
+        } else {
+            $this->_staff_picture_url = $this->_relative_asset_path . "users/_";
+        }
+
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartView.php');
     }
 
@@ -90,7 +97,7 @@ class Pluslet_OrgChart extends Pluslet {
 
         $supervisor_staff = $this->getSupervisorStaff($supervisor_id);
         $supervisor = $this->getEmployee($supervisor_id);
-        $head = array("staff_id" => $supervisor['staff_id'], "lname" => $supervisor['lname']);
+        $head = array("staff_id" => $supervisor['staff_id'], "uname" => strtolower($supervisor['fname']) . '.' . strtolower($supervisor['lname']), "fullname" => $supervisor['fname'] . ' ' . $supervisor['lname']);
 
         if(count($supervisor_staff) > 0) {
 
@@ -98,7 +105,7 @@ class Pluslet_OrgChart extends Pluslet {
 
             foreach ($supervisor_staff as $employee) {
 
-                $child = array("staff_id" => $employee['staff_id'], "lname" => $employee['lname']);
+                $child = array("staff_id" => $employee['staff_id'], "uname" => strtolower($employee['fname']) . '.' . strtolower($employee['lname']), "fullname" => $employee['fname'] . ' ' . $employee['lname']);
 
                 $level++;
                 SELF::getSupervisorStaffTree($employee['staff_id'], $staff, $child, $level);

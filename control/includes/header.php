@@ -182,6 +182,9 @@ mb_internal_encoding('UTF-8');
     }
     ?>
 
+    <!-- Stylesheet for Organizational Chart pluslet -->
+    <link href="<?=$AssetPath?>css/shared/jquery.orgchart.css" rel="stylesheet" type="text/css">
+
   </head>
   <body id="controlpage">
 
