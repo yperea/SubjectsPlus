@@ -16,6 +16,7 @@ class Pluslet_OrgChart extends Pluslet {
     protected $_employee;
     protected $_organization_tree ;
     protected $_staff_picture_url;
+    protected $_pluslet_id;
 
     public function __construct($pluslet_id = "", $flag = "", $subject_id = "", $isclone = 0) {
 
@@ -25,6 +26,7 @@ class Pluslet_OrgChart extends Pluslet {
 
         $this->_type = "OrgChart";
         $this->_pluslet_bonus_classes = "orgchart-pluslet";
+        $this->_pluslet_id = $pluslet_id;
 
         if ($this->_extra != "") {
             $this->_extra = json_decode($this->_extra, true);
@@ -100,7 +102,9 @@ class Pluslet_OrgChart extends Pluslet {
 
         $supervisor_staff = $this->getSupervisorStaff($supervisor_id);
         $supervisor = $this->getEmployee($supervisor_id);
-        $head = array("staff_id" => $supervisor['staff_id'], "uname" => strtolower($supervisor['fname']) . '.' . strtolower($supervisor['lname']), "fullname" => $supervisor['fname'] . ' ' . $supervisor['lname']);
+        $head = array("staff_info" => $this->getEmployeeInfo($supervisor_id),
+                      "uname" => strtolower($supervisor['fname']) . '.' . strtolower($supervisor['lname']),
+                      "fullname" => $supervisor['fname'] . ' ' . $supervisor['lname']);
 
         if(count($supervisor_staff) > 0) {
 
@@ -108,7 +112,9 @@ class Pluslet_OrgChart extends Pluslet {
 
             foreach ($supervisor_staff as $employee) {
 
-                $child = array("staff_id" => $employee['staff_id'], "uname" => strtolower($employee['fname']) . '.' . strtolower($employee['lname']), "fullname" => $employee['fname'] . ' ' . $employee['lname']);
+                $child = array("staff_info" => $this->getEmployeeInfo($employee['staff_id']),
+                               "uname" => strtolower($employee['fname']) . '.' . strtolower($employee['lname']),
+                               "fullname" => $employee['fname'] . ' ' . $employee['lname']);
 
                 $level++;
                 SELF::getSupervisorStaffTree($employee['staff_id'], $staff, $child, $level);
@@ -166,6 +172,38 @@ class Pluslet_OrgChart extends Pluslet {
 
         return $results;
     }
+
+    /**
+     * Gets only info allowed to be displayed.
+     *
+     * @param staff_id Employee id.
+     * @return employee.
+     */
+    protected function getEmployeeInfo($staff_id) {
+
+        $employee_info = array();
+        $employee = $this->getEmployee($staff_id);
+
+        foreach ($this->_extra as $param => $value) {
+
+            switch ($param){
+                case "show_staff_title":
+                    if (!empty($value)) {
+                        $employee_info[] = "<b>" . $employee['title'] . "</b>";
+                    }
+                    break;
+
+                case "show_staff_department":
+                    if (!empty($value)) {
+                        $employee_info[] = $employee['department'];
+                    }
+                    break;
+            }
+        }
+
+        return implode(" <br /> ", $employee_info);
+    }
+
 
     /**
      * Gets an employee for a given staff Id.

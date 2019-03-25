@@ -29,14 +29,6 @@
         <?php endforeach;?>
     </select>
 
-    <label>Staff Attributes</label>
-    <input type="checkbox"
-           name="OrgChart-extra-show_staff_name"
-           value="Yes"
-           <?= !empty($this->_extra['show_staff_name']) ? "checked" : "";?>
-    />
-    <label style="display:inline;"> Show Name</label>
-    <br />
 
     <input type="checkbox"
            name="OrgChart-extra-show_staff_photo"
