@@ -1630,7 +1630,7 @@ li.fav-box-item:hover::before {color: #C03957;}
   width: -moz-calc(100% - 10px);
   width: -webkit-calc(100% - 10px);
   width: calc(100% - 10px);
-  overflow: visible;
+  /*overflow: visible;*/
   position: relative;
 }
 
