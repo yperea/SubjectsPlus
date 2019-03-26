@@ -23,8 +23,11 @@
             name="OrgChart-extra-staff_supervisor_id">
         <option value="">All</option>
         <?php foreach ($this->_supervisors as $staff): ?>
-            <option value="<?= $staff["staff_id"] ?>" <?= $this->_extra['staff_supervisor_id'] == $staff["staff_id"] ? "selected" : "";?>>
-                <?= $staff["fname"] . " " . $staff["lname"] . " - " . substr($staff["title"],0,50) . "..." ?>
+            <option value="<?= $staff["staff_id"] ?>"
+                <?= $this->_extra['staff_supervisor_id'] == $staff["staff_id"] ? "selected" : "";?>>
+                <?= $staff["fname"] . " "
+                  . $staff["lname"] . " - "
+                  . substr($staff["title"],0,50) . "..." ?>
             </option>
         <?php endforeach;?>
     </select>

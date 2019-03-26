@@ -2,7 +2,6 @@
 
 namespace SubjectsPlus\Control;
 require_once ("Pluslet.php");
-require_once (__DIR__."/../../ViewModels/Employee.php");
 use PDO;
 
 /**
@@ -22,8 +21,6 @@ class Pluslet_OrgChart extends Pluslet {
 
         parent::__construct($pluslet_id, $flag, $subject_id, $isclone);
 
-        $employee = new \Employee();
-
         $this->_type = "OrgChart";
         $this->_pluslet_bonus_classes = "orgchart-pluslet";
         $this->_pluslet_id = $pluslet_id;
@@ -33,6 +30,7 @@ class Pluslet_OrgChart extends Pluslet {
         }
     }
 
+
     /**
      * Returns a string including a fontawesome icon and a span
      * including the staff-facing name of the pluslet.
@@ -40,9 +38,13 @@ class Pluslet_OrgChart extends Pluslet {
      */
     public static function getMenuIcon() {
 
-        $icon="<span style=\"color: Tomato;\"><i class=\"fa fa-sitemap\" title=\"" . _("Org Chart") . "\" ></i></span><span class=\"icon-text\">" . _("Org Chart") . "</span>";
+        $icon = "<span style=\"color: Tomato;\"><i class=\"fa fa-sitemap\" title=\""
+              . _("Org Chart") . "\" ></i></span><span class=\"icon-text\">" . _("Org Chart")
+              . "</span>";
+
         return $icon;
     }
+
 
     /**
      * Returns the user-facing name.
@@ -52,6 +54,7 @@ class Pluslet_OrgChart extends Pluslet {
 
         return _("Org Chart");
     }
+
 
     protected function onViewOutput() {
 
@@ -70,14 +73,16 @@ class Pluslet_OrgChart extends Pluslet {
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartView.php');
     }
 
+
     protected function onEditOutput() {
 
         parent::onEditOutput();
 
-        $this->_supervisors = $this->getSupervisors();//getStaff();
+        $this->_supervisors = $this->getSupervisors();
         $this->_body = $this->loadHtml(__DIR__ . '/views/OrgChartEdit.php');
 
     }
+
 
     /**
      * Builds a recursive tree organization structure reporting to a supervisor.
@@ -103,8 +108,8 @@ class Pluslet_OrgChart extends Pluslet {
         $supervisor_staff = $this->getSupervisorStaff($supervisor_id);
         $supervisor = $this->getEmployee($supervisor_id);
         $head = array("staff_info" => $this->getEmployeeInfo($supervisor_id),
-                      "uname" => strtolower($supervisor['fname']) . '.' . strtolower($supervisor['lname']),
-                      "fullname" => $supervisor['fname'] . ' ' . $supervisor['lname']);
+                      "user_name" => strtolower($supervisor['fname']) . '.' . strtolower($supervisor['lname']),
+                      "full_name" => $supervisor['fname'] . ' ' . $supervisor['lname']);
 
         if(count($supervisor_staff) > 0) {
 
@@ -113,8 +118,8 @@ class Pluslet_OrgChart extends Pluslet {
             foreach ($supervisor_staff as $employee) {
 
                 $child = array("staff_info" => $this->getEmployeeInfo($employee['staff_id']),
-                               "uname" => strtolower($employee['fname']) . '.' . strtolower($employee['lname']),
-                               "fullname" => $employee['fname'] . ' ' . $employee['lname']);
+                               "user_name" => strtolower($employee['fname']) . '.' . strtolower($employee['lname']),
+                               "full_name" => $employee['fname'] . ' ' . $employee['lname']);
 
                 $level++;
                 SELF::getSupervisorStaffTree($employee['staff_id'], $staff, $child, $level);
@@ -158,6 +163,7 @@ class Pluslet_OrgChart extends Pluslet {
         return $results;
     }
 
+
     /**
      * Gets the staff of a specific supervisor.
      *
@@ -172,6 +178,7 @@ class Pluslet_OrgChart extends Pluslet {
 
         return $results;
     }
+
 
     /**
      * Gets only info allowed to be displayed.
@@ -224,6 +231,7 @@ class Pluslet_OrgChart extends Pluslet {
         return $result;
     }
 
+
     /**
      * Gets a set of employees according to given parameters.
      *
@@ -235,8 +243,6 @@ class Pluslet_OrgChart extends Pluslet {
         $dbc         = new Querier;
         $results     = null;
         $whereClause = null;
-
-        $employee = new \Employee();
 
         $sql   = "SELECT DISTINCT s.supervisor_id,
                                     s.staff_id,
@@ -271,6 +277,7 @@ class Pluslet_OrgChart extends Pluslet {
         }
         return $results;
     }
+
 
     /**
      * Build the WHERE clause based on parameters passed.
