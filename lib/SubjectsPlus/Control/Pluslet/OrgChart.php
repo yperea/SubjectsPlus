@@ -1,6 +1,7 @@
 <?php
 
 namespace SubjectsPlus\Control;
+//require_once  (__DIR__ . "/../../../../lib/SubjectsPlus/Control/Querier.php");
 require_once ("Pluslet.php");
 use PDO;
 
@@ -93,7 +94,7 @@ class Pluslet_OrgChart extends Pluslet {
      * @param $level integer that keeps the depth of the current node in the tree.
      * @return array with the organization structure.
      */
-    protected function getSupervisorStaffTree($supervisor_id = null, &$staff = array(), &$parent = array(), &$level = 0) {
+    public function getSupervisorStaffTree($supervisor_id = null, &$staff = array(), &$parent = array(), &$level = 0) {
 
         $children = array();
 
@@ -154,7 +155,7 @@ class Pluslet_OrgChart extends Pluslet {
      *
      * @return array of staff supervisors.
      */
-    protected function getSupervisors() {
+    public function getSupervisors() {
 
         $results        = null;
         $query_params   = [":ptags"=> "supervisor"];
@@ -170,7 +171,7 @@ class Pluslet_OrgChart extends Pluslet {
      * @param $supervisor_id Supervisor id.
      * @return array of employees.
      */
-    protected function getSupervisorStaff($supervisor_id) {
+    public function getSupervisorStaff($supervisor_id) {
 
         $results        = null;
         $query_params   = [":supervisor_id"=> $supervisor_id];
@@ -186,7 +187,7 @@ class Pluslet_OrgChart extends Pluslet {
      * @param staff_id Employee id.
      * @return employee.
      */
-    protected function getEmployeeInfo($staff_id) {
+    public function getEmployeeInfo($staff_id) {
 
         $employee_info = array();
         $employee = $this->getEmployee($staff_id);
@@ -218,7 +219,7 @@ class Pluslet_OrgChart extends Pluslet {
      * @param staff_id Employee id.
      * @return employee.
      */
-    protected function getEmployee($staff_id) {
+    public function getEmployee($staff_id) {
 
         $result         = null;
         $query_params   = [':staff_id'=> $staff_id];
@@ -238,9 +239,9 @@ class Pluslet_OrgChart extends Pluslet {
      * @param $query_params array of parameters for PDO prepared statement.
      * @return array of employees.
      */
-    protected function getStaff($query_params = null) {
+    public function getStaff($query_params = null) {
 
-        $dbc         = new Querier;
+        $dbc         = new Querier();
         $results     = null;
         $whereClause = null;
 
@@ -285,7 +286,7 @@ class Pluslet_OrgChart extends Pluslet {
      * @param $query_params array of parameters for PDO prepared statement.
      * @return string with the filters to be applied.
      */
-    protected function getQueryFilters ($query_params = null) {
+    public function getQueryFilters ($query_params = null) {
 
         $filters = array();
 
@@ -295,7 +296,7 @@ class Pluslet_OrgChart extends Pluslet {
 
                 case ":ptags":
                     if ($value == null) {
-                        $filters[] = "s.staff_id is null";
+                        $filters[] = "s.ptags is null";
                     } else {
                         $filters[] = "s.ptags = $param";
                     }
