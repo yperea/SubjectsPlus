@@ -12,6 +12,8 @@
 <link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/public/um.css">
 <link type="text/css" media="print" rel="stylesheet" href="<?php print $AssetPath; ?>css/public/um-print.css">
 <link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/shared/font-awesome.min.css">
+<link type="text/css" media="screen" rel="stylesheet" href="<?php print $AssetPath; ?>css/shared/jquery.orgchart.css">
+
 
 
 
@@ -28,7 +30,7 @@ if(isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != ""){
 */
 
 if ($_SERVER['HTTP_HOST'] != "localhost") {
-    define("PATH_FROM_ROOT", "https://library.miami.edu");
+    define("PATH_FROM_ROOT", "http://localhost/SubjectsPlus/subjects");
     define("THEME_FOLDER", "https://library.miami.edu/wp-content/themes/");
     define("THEME_BASE_DIR", "https://library.miami.edu/wp-content/themes/umiami/");
 } else {
@@ -36,7 +38,7 @@ if ($_SERVER['HTTP_HOST'] != "localhost") {
     define("PATH_FROM_ROOT", "/richter");
     define("THEME_BASE_DIR", "http://localhost/richter/wp-content/themes/umiami/");
     */
-     define("PATH_FROM_ROOT", "https://library.miami.edu");
+     define("PATH_FROM_ROOT", "http://localhost/SubjectsPlus/subjects");
     define("THEME_FOLDER", "https://library.miami.edu/wp-content/themes/");
     define("THEME_BASE_DIR", "https://library.miami.edu/wp-content/themes/umiami/");   
 }

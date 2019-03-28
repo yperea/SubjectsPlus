@@ -289,7 +289,8 @@ class Config
 
 			//close and change permissions of file
 			fclose( $lhndFile );
-			return chmod( $this->lstrConfigPath, 0666 );
+			//return chmod( $this->lstrConfigPath, 0666 );
+            return true;
 		}
 
 		return FALSE;
