@@ -162,8 +162,8 @@ $textno = _("No");
 header("Content-Type: text/html; charset=utf-8");
 
 // You may need to comment out the next two lines if you don't have mbstring enabled in PHP
-mb_language('uni');
-mb_internal_encoding('UTF-8');
+//mb_language('uni');
+//mb_internal_encoding('UTF-8');
 ?>
 <!DOCTYPE html>
 <html>
